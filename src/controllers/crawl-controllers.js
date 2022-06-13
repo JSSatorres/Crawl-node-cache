@@ -10,7 +10,7 @@ export async function scrapOnePage(req, res) {
   }
 }
 
-export async function scrapXPages(req, res) {
+export async function crawlerMoreThanOnePage(req, res) {
   try {
     res.status(200).send({
       data: "totalInfo",

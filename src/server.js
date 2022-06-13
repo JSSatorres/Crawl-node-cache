@@ -1,6 +1,6 @@
 import express from "express";
 import morgan from "morgan";
-import routerScraper from "./routes/scraper-routes.js";
+import routerScraper from "./routes/crawl-routes.js";
 
 const app = express();
 
