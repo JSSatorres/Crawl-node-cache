@@ -51,8 +51,3 @@ export const crawlDataPage = async (pagesNumber) => {
   });
   return data
 };
-
-
-
-
-crawlDataPage(2)
