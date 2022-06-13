@@ -8,6 +8,6 @@ import {
 const routerScraper = express.Router();
 
 routerScraper.get("/1", crawlerOnePage)
-routerScraper.get("/:numberPagesToCraw", crawlerMoreThanOnePage);
+routerScraper.get("/:numberOfPagesWanted", crawlerMoreThanOnePage);
 
 export default routerScraper;
