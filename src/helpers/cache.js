@@ -1,10 +1,12 @@
 import NodeCache from "node-cache";
+
+//TODO change 100seconds to 300
 const myCache = new NodeCache({ stdTTL: 100 });
 
 /**
  * stores a page that has been crawled
  * @param {String} key the key to safe in node-cache, key format: page+Number
- * @param {Array} value info to store in the cache
+ * @param {Array<Object>} value info to store in the cache
  * @returns {void}
  */
 
@@ -34,7 +36,7 @@ export const getOnePageToCache = (key) => {
 };
 
 /**
- * check the highest number of page in cache, when it finds a page in cache it ends, this means all the lower ones are in cache
+ * check the highest page number in cache, have a  decreasing loop when it finds a page in cache the loop finish, this means all the lower pages are in cache and it is not necesary to crawl
  * @param {Number} numberToCheck maximum number of pages to be crawled
  * @returns  {Number} the highest number page in cache
  */
@@ -42,22 +44,22 @@ export const getOnePageToCache = (key) => {
 export const checkKeysCacheExist = async (numberToCheck) => {
   const keysToCheck = await myCache.keys();
   let highestNumberPageCached = 0;
-  console.log("keys ", keysToCheck);
-  console.log("el numero de comprobacion", numberToCheck);
 
   for (let i = numberToCheck; 1 <= i; i--) {
-    console.log("esta oncuida la key", keysToCheck.includes(`page${i}`));
+
     if (keysToCheck.includes(`page${i}`) === true) {
       let highestNumberPageCached = i;
-      break;
+      console.log(" si entraaaaa highestNumberPageCached",highestNumberPageCached);
+      return highestNumberPageCached;
     }
   }
+  console.log("no entraaaa highestNumberPageCached",highestNumberPageCached);
   return highestNumberPageCached;
 };
 /**
- * 
- * @param {*} numberToCheck 
- * @returns 
+ * get the pages are stored in cache
+ * @param {*} numberToCheck the number of pages are checked which were in cache
+ * @returns {Array<Object>} all the pages in cache
  */
 
 export const getPagesInCached = async (numberToCheck) => {
@@ -65,15 +67,17 @@ export const getPagesInCached = async (numberToCheck) => {
   // let keyPagesInCached =[]
   // console.log("keys ",keysToCheck);
   // console.log(numberToCheck);
+  let pagesGetitFromCached =[]
 
   for (let i = numberToCheck; 0 < i; i--) {
     console.log(keysToCheck.includes(`page${i}`));
     if (keysToCheck.includes(`page${i}`) === true) {
       const onePageGetitFromCached = await getOnePageToCache(`page${i}`);
-      pagesGetitFromCached = [
-        ...pagesGetitFromCached.concat(onePageGetitFromCached),
+      console.log(`page${i}`);
+      pagesGetitFromCached= [ ...pagesGetitFromCached.concat(onePageGetitFromCached),
       ];
     }
   }
+  
   return pagesGetitFromCached;
 };
