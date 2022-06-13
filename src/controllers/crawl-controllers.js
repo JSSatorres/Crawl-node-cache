@@ -1,9 +1,10 @@
-import crawlTableRow from "../utils/utils.js";
+import { crawlDataPage} from "../utils/crawlers.js";
 
-export async function scrapOnePage(req, res) {
+export async function crawlerOnePage(req, res) {
   try {
+    const data = await crawlDataPage(1)
     res.status(200).send({
-      data: "info",
+      data: data,
     });
   } catch (error) {
     console.log(error);
@@ -11,50 +12,15 @@ export async function scrapOnePage(req, res) {
 }
 
 export async function crawlerMoreThanOnePage(req, res) {
+  const {numberPagesToCraw } = req.params;
+  let dataAllPages = []
   try {
+    for (let i = 0; i <= numberPagesToCraw; i++) {
+      let dataOnePage =  await crawlDataPage(i)
+      dataAllPages.push(dataOnePage)
+    }
     res.status(200).send({
-      data: "totalInfo",
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function crawlerPage(req, res) {
-  try {
-    const titles = await crawlTableRow({
-      url: "https://news.ycombinator.com/",
-      selectorTableRow: ".athing",
-      selectorTag: ".titlelink",
-    });
-    const links = await crawlTableRow({
-      url: "https://news.ycombinator.com/",
-      selectorTableRow: ".athing",
-      selectorTag: ".sitestr",
-    });
-    const authors = await crawlTableRow({
-      url: "https://news.ycombinator.com/",
-      selectorTableRow: ".subtext",
-      selectorTag: ".hnuser",
-    });
-    const comments = await crawlTableRow({
-      url: "https://news.ycombinator.com/",
-      selectorTableRow: ".subtext",
-      selectorTag: ".subtext a:nth-child(6)",
-    });
-
-    const data = titles.map((title, index) => {
-      return {
-        title: title.info,
-        link: links[index]?.info,
-        author: authors[index]?.info,
-        comments: comments[index]?.info,
-        control: index,
-      };
-    });
-
-    res.status(200).send({
-      data: data,
+      data: dataAllPages,
     });
   } catch (error) {
     console.log(error);
