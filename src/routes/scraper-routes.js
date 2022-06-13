@@ -1,12 +1,14 @@
-const express = require("express");
-const {
-  scrapOnePage,
-  scrapXPages,
-} = require("../controllers/scraper-controllers");
+import express from "express";
+
+import {
+  crawlerPage,
+  crawlerMoreThanOnePage
+} from "../controllers/scraper-controllers.js";
 
 const routerScraper = express.Router();
 
-routerScraper.get("/1", scrapOnePage);
-routerScraper.get("/:pages", scrapXPages);
+// routerScraper.get("/1", scrapOnePage);
+routerScraper.get("/1", crawlerPage)
+routerScraper.get("/:pages", crawlerMoreThanOnePage);
 
-module.exports = routerScraper;
+export default routerScraper;
