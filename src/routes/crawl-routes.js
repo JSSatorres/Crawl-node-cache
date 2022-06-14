@@ -1,11 +1,11 @@
-const express = require('express');
+const {Router} = require('express');
 
 const {
   crawlerOnePage,
   crawlerMoreThanOnePage
 } = require("../controllers/crawl-controllers");
 
-const routerScraper = express.Router();
+const routerScraper = Router();
 
 routerScraper.get("/1", crawlerOnePage)
 routerScraper.get("/:numberOfPagesWanted", crawlerMoreThanOnePage);

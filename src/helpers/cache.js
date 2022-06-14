@@ -1,7 +1,7 @@
 const NodeCache = require("node-cache");
 
 //TODO change 100seconds to 300
-const myCache = new NodeCache({ stdTTL: 100 });
+const myCache = new NodeCache({ stdTTL: 30 });
 
 /**
  * stores a page that has been crawled

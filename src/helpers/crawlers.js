@@ -1,5 +1,6 @@
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-const cheerio = require("cheerio") 
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
+const cheerio = require("cheerio");
 
 /**
  * crawled the tags given inside a row of a table
@@ -65,8 +66,21 @@ const crawlDataPage = async (pagesNumber) => {
   return data;
 };
 
+/**
+ * check it is posible to transform into a number the request params
+ * @param {String} reqParmams the value of the request params
+ * @returns {Boolean} true is posible to parse into a number, false if the parse to a number return a false
+ */
+const isNumber = async (reqParmams ) => {
+  const checkParam = await parseInt(reqParmams)
+  if (await isNaN(checkParam) === true ) {
+    return false;
+  }
+};
+
 
 module.exports = {
   crawlTableRow,
   crawlDataPage,
+  isNumber
 };

@@ -25,26 +25,26 @@ const {saveOnePageToCache,checkCachePage } = require ("../helpers/cache")
 
 
 
-describe("given test service ", () => {
-  describe("when is imboced  scrapOnePage ", () => {
-    describe(" it resolves   ", () => {
-      test("then send status should have been called", async () => {
-        try {
-          const res = {
-            sendStatus: jest.fn(),
-          };
-          const req = {
-            sendStatus: jest.fn(),
-          };
-          await crawlerOnePage(req, res);
-          await expect(res.sendStatus).toBe(500);
-        } catch (e) {
-          expect(e);
-        }
-      });
-    });
-  });
-});
+// describe("given test service ", () => {
+//   describe("when is imboced  scrapOnePage ", () => {
+//     describe(" it resolves   ", () => {
+//       test("then send status should have been called", async () => {
+//         try {
+//           const res = {
+//             sendStatus: jest.fn(),
+//           };
+//           const req = {
+//             sendStatus: jest.fn(),
+//           };
+//           await crawlerOnePage(req, res);
+//           await expect(res.sendStatus).toBe(500);
+//         } catch (e) {
+//           expect(e);
+//         }
+//       });
+//     });
+//   });
+// });
 
 // describe("given test service ", () => {
 //   describe("when is imboced  scrapXPages ", () => {

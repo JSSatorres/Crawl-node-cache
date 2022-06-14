@@ -2,9 +2,9 @@
   "name": "crawl-node-cache",
   "version": "1.0.0",
   "description": "crawl and node-cache",
-  "main": "src/inde.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js ",
+    "test": "mocha src/test/api.test.js --timeout 10000 --exit ",
     "play": "cross-env NODE_ENV=development nodemon src/utils/utils.js",
     "start": "cross-env NODE_ENV=production node src/index.js",
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
@@ -29,7 +29,7 @@
     "node-fetch": "^3.2.0"
   },
   "devDependencies": {
-    "jest": "^28.1.1",
+    "mocha": "^10.0.0",
     "nodemon": "^2.0.15",
     "supertest": "^6.2.3"
   },

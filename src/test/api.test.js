@@ -21,11 +21,14 @@ const request = require("supertest");
 //       });
 //     });
 //   });
-
-it("shoul respond with a list of data", (done) => {
-  request(app)
-    .get("/1")
-    .set("Accept", "application/json")
-    .expect("Content-Type", /json/)
-    .expect(200, done);
+describe("given test service ", () => {
+  describe("when is imboced  scrapOnePage ", () => {
+    it("shoul respond with a list of data", (done) => {
+      request(app)
+        .get("/1")
+        .set("Accept", "application/json")
+        .expect("Content-Type", /json/)
+        .expect(200, done);
+    });
+  });
 });

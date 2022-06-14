@@ -3,10 +3,10 @@ const {
   checkCachePage,
   getOnePageToCache,
   checkKeysCacheExist,
-  getPagesInCached
-} = require ("../helpers/cache.js");
+  getPagesInCached,
+} = require("../helpers/cache.js");
 
-const  { crawlDataPage } = require ("../helpers/crawlers");
+const { crawlDataPage, isNumber } = require("../helpers/crawlers");
 /**
  *
  * @param {*} req
@@ -32,46 +32,64 @@ async function crawlerOnePage(req, res) {
 }
 
 /**
- * 
- * @param {String} req 
- * @param {Array<Object>} res 
+ *
+ * @param {String} req
+ * @param {Array<Object>} res
  */
- async function crawlerMoreThanOnePage(req, res) {
+
+async function crawlerMoreThanOnePage(req, res) {
   const { numberOfPagesWanted } = req.params;
   console.log(numberOfPagesWanted);
 
-/**
- * @type {Array} Store the Total Result of crawl all pages
- */
+  if ((await isNumber(numberOfPagesWanted)) === false)
+    return res.json("Not a Number");
+
   let dataAllPages = [];
-/**
- *  @type {Number} the number of pages are stored in cache
- */
+  let numberOfPagesWantedToNumber = parseInt(numberOfPagesWanted);
+  let stringPagesNotToCrawl = await checkKeysCacheExist(numberOfPagesWantedToNumber);
+  let pagesNotToCrawl = parseInt(stringPagesNotToCrawl);
+  let pagesToCrawl = numberOfPagesWantedToNumber - pagesNotToCrawl;
 
-let stringPagesNotToCrawl = await checkKeysCacheExist( numberOfPagesWanted)
-let pagesNotToCrawl = parseInt( stringPagesNotToCrawl)+1
+  console.log("umberOfPagesWanted", numberOfPagesWantedToNumber);
 
-console.log("umberOfPagesWanted",numberOfPagesWanted);
+  //TODO cuando se hace dos veces la misma peticion falla
+  //TODO cuando no se recoge la cache va bien la longitud del dat pero cuando entras las paginas de cache algo falla
+  // console.log( "pagesInCache antes del forrrrrrrrr", pagesInCache)
+  console.log("pagesNotToCrawl antes del forrrrrrrrr", pagesNotToCrawl);
+  console.log("numberOfPagesWantedToNumber antes del forrrrrrrrr",numberOfPagesWantedToNumber);
+  console.log("pagesToCrawl antes del forrrrrrrrr", pagesToCrawl);
 
-const pagesToCrawl =  numberOfPagesWanted - pagesNotToCrawl
-//TODO cuando se hace dos veces la misma peticion falla
-//TODO cuando no se recoge la cache va bien la longitud del dat pero cuando entras las paginas de cache algo falla
   try {
-    for (let i = pagesNotToCrawl; i <= numberOfPagesWanted; i++) {
-      console.log(".............",i);
-      let dataOnePage = await crawlDataPage(i);
+   
 
-      await saveOnePageToCache(`page${i}`, dataOnePage);
+
+    //crwling pages are not in cache
+    for (let i = pagesNotToCrawl; i < numberOfPagesWantedToNumber; i++) {
+      console.log(".............", i);
+      //TODO el indice que paso deberia ser 1 e i=0 por lo tanto sumo 1
+      let dataOnePage = await crawlDataPage(i+1);
+
+      //es cero no hay paginas para traer decache
+      console.log("dataOnePage antes del forrrrrrrrr", dataOnePage.lenght);
+      console.log("aaaaaaaaaaaaaaaaaaaaaaaaa      ",`page${i+1}`);
+
+      await saveOnePageToCache(`page${i+1}`, dataOnePage);
+
       dataAllPages = [...dataAllPages.concat(dataOnePage)];
-      console.log( "dataAllPages antes del ifff",dataAllPages.length)
-      if (pagesNotToCrawl-1!==0) {
-        console.log("pagesNotToCrawl",pagesNotToCrawl);
-        const pagesInCache = await  getPagesInCached(pagesNotToCrawl)
-        console.log( "pagesInCache dentro del iffffff", pagesInCache.length)
-        dataAllPages = [...dataAllPages.concat(pagesInCache)]
-      }
+
+      console.log("dataAllPages las que se van metiendo antes del ifff", dataAllPages.length);
+      console.log("justo antes del ultimo if no entra", pagesNotToCrawl);
+
     }
-    // console.log( "dataAllPages",dataAllPages.length)
+     //cachting pages in cache
+    if (pagesNotToCrawl  !== 0) {
+      console.log("pagesNotToCrawl", pagesNotToCrawl);
+      const pagesInCache = await getPagesInCached(pagesNotToCrawl);
+      console.log("pagesInCache dentro del iffffff", pagesInCache.length);
+      dataAllPages = [...dataAllPages.concat(pagesInCache)];
+      console.log(dataAllPages.length);
+    }
+    console.log("dataAllPages", dataAllPages.length);
     res.status(200).send({
       data: dataAllPages,
     });
@@ -80,4 +98,4 @@ const pagesToCrawl =  numberOfPagesWanted - pagesNotToCrawl
   }
 }
 
-module.exports ={crawlerOnePage,crawlerMoreThanOnePage}
+module.exports = { crawlerOnePage, crawlerMoreThanOnePage };
