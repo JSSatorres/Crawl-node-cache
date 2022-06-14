@@ -1,4 +1,4 @@
-import NodeCache from "node-cache";
+const NodeCache = require("node-cache");
 
 //TODO change 100seconds to 300
 const myCache = new NodeCache({ stdTTL: 100 });
@@ -10,7 +10,7 @@ const myCache = new NodeCache({ stdTTL: 100 });
  * @returns {void}
  */
 
-export const saveOnePageToCache = (key, value) => {
+const saveOnePageToCache = (key, value) => {
   myCache.set(key, value, 60);
 };
 
@@ -20,7 +20,7 @@ export const saveOnePageToCache = (key, value) => {
  * @returns {Boolean} true: key is stored in cache, false: key is not stored in cache
  */
 
-export const checkCachePage = (key) => {
+const checkCachePage = (key) => {
   console.log("esta es la key", key);
   return myCache.has(key);
 };
@@ -31,7 +31,7 @@ export const checkCachePage = (key) => {
  * @returns the value of a given key
  */
 
-export const getOnePageToCache = (key) => {
+const getOnePageToCache = (key) => {
   return myCache.get(key);
 };
 
@@ -41,19 +41,21 @@ export const getOnePageToCache = (key) => {
  * @returns  {Number} the highest number page in cache
  */
 
-export const checkKeysCacheExist = async (numberToCheck) => {
+const checkKeysCacheExist = async (numberToCheck) => {
   const keysToCheck = await myCache.keys();
   let highestNumberPageCached = 0;
 
   for (let i = numberToCheck; 1 <= i; i--) {
-
     if (keysToCheck.includes(`page${i}`) === true) {
       let highestNumberPageCached = i;
-      console.log(" si entraaaaa highestNumberPageCached",highestNumberPageCached);
+      console.log(
+        " si entraaaaa highestNumberPageCached",
+        highestNumberPageCached
+      );
       return highestNumberPageCached;
     }
   }
-  console.log("no entraaaa highestNumberPageCached",highestNumberPageCached);
+  console.log("no entraaaa highestNumberPageCached", highestNumberPageCached);
   return highestNumberPageCached;
 };
 /**
@@ -62,22 +64,31 @@ export const checkKeysCacheExist = async (numberToCheck) => {
  * @returns {Array<Object>} all the pages in cache
  */
 
-export const getPagesInCached = async (numberToCheck) => {
+const getPagesInCached = async (numberToCheck) => {
   const keysToCheck = await myCache.keys();
   // let keyPagesInCached =[]
   // console.log("keys ",keysToCheck);
   // console.log(numberToCheck);
-  let pagesGetitFromCached =[]
+  let pagesGetitFromCached = [];
 
   for (let i = numberToCheck; 0 < i; i--) {
     console.log(keysToCheck.includes(`page${i}`));
     if (keysToCheck.includes(`page${i}`) === true) {
       const onePageGetitFromCached = await getOnePageToCache(`page${i}`);
       console.log(`page${i}`);
-      pagesGetitFromCached= [ ...pagesGetitFromCached.concat(onePageGetitFromCached),
+      pagesGetitFromCached = [
+        ...pagesGetitFromCached.concat(onePageGetitFromCached),
       ];
     }
   }
-  
+
   return pagesGetitFromCached;
+};
+
+module.exports = {
+  saveOnePageToCache,
+  checkCachePage,
+  getOnePageToCache,
+  checkKeysCacheExist,
+  getPagesInCached,
 };

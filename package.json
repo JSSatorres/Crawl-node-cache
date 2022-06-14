@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "description": "crawl and node-cache",
   "main": "src/inde.js",
-  "type": "module",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --verbose --detectOpenHandles",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js ",
     "play": "cross-env NODE_ENV=development nodemon src/utils/utils.js",
     "start": "cross-env NODE_ENV=production node src/index.js",
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
@@ -27,7 +26,7 @@
     "express": "^4.18.1",
     "morgan": "^1.10.0",
     "node-cache": "^5.1.2",
-    "node-fetch": "^3.2.6"
+    "node-fetch": "^3.2.0"
   },
   "devDependencies": {
     "jest": "^28.1.1",

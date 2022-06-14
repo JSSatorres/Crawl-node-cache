@@ -1,47 +1,50 @@
-const supertest = require("supertest");
-const app = require("../server");
-const api = supertest(app);
-const { scrapOnePage, scrapXPages,client} = require("../controllers/scraper-controllers");
+const supertest = require ("supertest");
+const app = require ("../server");
+const { crawlerOnePage,crawlerMoreThanOnePage} = require ("../controllers/crawl-controllers")
+const {saveOnePageToCache,checkCachePage } = require ("../helpers/cache")
 
+// afterEach(() => app.close());
 
-
-describe("given test service ", () => {
-  describe("when is imboced  http://localhost:4000/4", () => {
-    describe(" it resolves   ", () => {
-      test("should respond with a 200 code staturs", async () => {
-        try {
-          const response = await api.get("/4").send()
-          expect(response.status).toBe(200)
-        } catch (error) {
-          console.log(error);
-        }
-      });
-    });
-  });
-});
-
-
+// const api = supertest(app);
 
 // describe("given test service ", () => {
-//   describe("when is imboced  scrapOnePage ", () => {
+//   describe("when is imboced  http://localhost:4000/4", () => {
 //     describe(" it resolves   ", () => {
-//       test("then send status should have been called", () => {
+//       test("should respond with a 200 code staturs", async () => {
+//         // jest.setTimeout(30000)
 //         try {
-//           // const res = {
-//           //   sendStatus: jest.fn(),
-//           // };
-//           // const req = {
-//           //   sendStatus: jest.fn(),
-//           // };
-//           scrapOnePage(req, res);
-//           expect(res.sendStatus).toHaveBeenCalledWith(200);
-//         } catch (e) {
-//           expect(e);
+//           const response = await api.get("/4").send()
+//           await expect(response.status).toBe(200)
+//         } catch (error) {
+//           console.log(error);
 //         }
 //       });
 //     });
 //   });
 // });
+
+
+
+describe("given test service ", () => {
+  describe("when is imboced  scrapOnePage ", () => {
+    describe(" it resolves   ", () => {
+      test("then send status should have been called", async () => {
+        try {
+          const res = {
+            sendStatus: jest.fn(),
+          };
+          const req = {
+            sendStatus: jest.fn(),
+          };
+          await crawlerOnePage(req, res);
+          await expect(res.sendStatus).toBe(500);
+        } catch (e) {
+          expect(e);
+        }
+      });
+    });
+  });
+});
 
 // describe("given test service ", () => {
 //   describe("when is imboced  scrapXPages ", () => {
@@ -158,4 +161,3 @@ describe("given test service ", () => {
 //     });
 //   });
 // });
-afterAll(() => client.quit());

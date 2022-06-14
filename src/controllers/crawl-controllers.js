@@ -1,19 +1,20 @@
-import {
+const {
   saveOnePageToCache,
   checkCachePage,
   getOnePageToCache,
   checkKeysCacheExist,
   getPagesInCached
-} from "../helpers/cache.js";
+} = require ("../helpers/cache.js");
 
-import { crawlDataPage } from "../helpers/crawlers.js";
+const  { crawlDataPage } = require ("../helpers/crawlers");
 /**
- * 
- * @param {*} req 
- * @param {*} res 
- * @returns 
+ *
+ * @param {*} req
+ * @param {*} res
+ * @returns
  */
-export async function crawlerOnePage(req, res) {
+
+async function crawlerOnePage(req, res) {
   console.log(checkCachePage("page1"));
   if (checkCachePage("page1") === true) {
     const data = await getOnePageToCache("page1");
@@ -35,7 +36,7 @@ export async function crawlerOnePage(req, res) {
  * @param {String} req 
  * @param {Array<Object>} res 
  */
-export async function crawlerMoreThanOnePage(req, res) {
+ async function crawlerMoreThanOnePage(req, res) {
   const { numberOfPagesWanted } = req.params;
   console.log(numberOfPagesWanted);
 
@@ -47,10 +48,8 @@ export async function crawlerMoreThanOnePage(req, res) {
  *  @type {Number} the number of pages are stored in cache
  */
 
-
 let stringPagesNotToCrawl = await checkKeysCacheExist( numberOfPagesWanted)
 let pagesNotToCrawl = parseInt( stringPagesNotToCrawl)+1
-
 
 console.log("umberOfPagesWanted",numberOfPagesWanted);
 
@@ -72,7 +71,7 @@ const pagesToCrawl =  numberOfPagesWanted - pagesNotToCrawl
         dataAllPages = [...dataAllPages.concat(pagesInCache)]
       }
     }
-    console.log( "dataAllPages",dataAllPages.length)
+    // console.log( "dataAllPages",dataAllPages.length)
     res.status(200).send({
       data: dataAllPages,
     });
@@ -80,3 +79,5 @@ const pagesToCrawl =  numberOfPagesWanted - pagesNotToCrawl
     console.log(error);
   }
 }
+
+module.exports ={crawlerOnePage,crawlerMoreThanOnePage}

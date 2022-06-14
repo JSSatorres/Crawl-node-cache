@@ -1,5 +1,5 @@
-import fetch from "node-fetch";
-import * as cheerio from "cheerio";
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const cheerio = require("cheerio") 
 
 /**
  * crawled the tags given inside a row of a table
@@ -9,7 +9,7 @@ import * as cheerio from "cheerio";
  * @returns {Array<Object>} Array with element in the selectorTag
  */
 
-export const crawlTableRow = async (url, selectorTableRow, selectorTag) => {
+const crawlTableRow = async (url, selectorTableRow, selectorTag) => {
   const response = await fetch(url);
   const html = await response.text();
 
@@ -31,7 +31,7 @@ export const crawlTableRow = async (url, selectorTableRow, selectorTag) => {
  * @param {Number} pagesNumber the number of the page wanted
  * @returns {Array<Object>}  the elements crawled of the page
  */
-export const crawlDataPage = async (pagesNumber) => {
+const crawlDataPage = async (pagesNumber) => {
   const titles = await crawlTableRow(
     `https://news.ycombinator.com/news?p=${pagesNumber}`,
     ".athing",
@@ -63,4 +63,10 @@ export const crawlDataPage = async (pagesNumber) => {
     };
   });
   return data;
+};
+
+
+module.exports = {
+  crawlTableRow,
+  crawlDataPage,
 };
