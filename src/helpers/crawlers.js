@@ -28,6 +28,27 @@ const crawlTableRow = async (url, selectorTableRow, selectorTag) => {
 };
 
 /**
+ *
+ * @param {*} titles
+ * @param {*} links
+ * @param {*} authors
+ * @param {*} comments
+ * @returns
+ */
+const objectCrawl = (titles, links, authors, comments) => {
+  const data = titles.map((title, index) => {
+    return {
+      title: title.info,
+      link: links[index]?.info,
+      author: authors[index]?.info,
+      comments: comments[index]?.info,
+      control: index,
+    };
+  });
+  return data;
+};
+
+/**
  * call the function crawlTableRow with the diferent params are needed to crawled, and map all the result to return the page crawled
  * @param {Number} pagesNumber the number of the page wanted
  * @returns {Array<Object>}  the elements crawled of the page
@@ -53,16 +74,7 @@ const crawlDataPage = async (pagesNumber) => {
     ".subtext",
     ".subtext a:nth-child(6)"
   );
-
-  const data = await titles.map((title, index) => {
-    return {
-      title: title.info,
-      link: links[index]?.info,
-      author: authors[index]?.info,
-      comments: comments[index]?.info,
-      control: index,
-    };
-  });
+  const data = await objectCrawl(titles, links, authors, comments);
   return data;
 };
 
@@ -71,16 +83,13 @@ const crawlDataPage = async (pagesNumber) => {
  * @param {String} reqParmams the value of the request params
  * @returns {Boolean} true is posible to parse into a number, false if the parse to a number return a false
  */
-const isNumber = async (reqParmams ) => {
-  const checkParam = await parseInt(reqParmams)
-  if (await isNaN(checkParam) === true ) {
+const isNumber = (reqParmams) => {
+  const checkParam = parseInt(reqParmams);
+  if (isNaN(checkParam) === true) {
     return false;
   }
+  return true;
 };
 
+module.exports = { crawlTableRow, crawlDataPage, objectCrawl, isNumber };
 
-module.exports = {
-  crawlTableRow,
-  crawlDataPage,
-  isNumber
-};

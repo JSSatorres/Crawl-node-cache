@@ -1,7 +1,7 @@
 const supertest = require ("supertest");
-const app = require ("../server");
-const { crawlerOnePage,crawlerMoreThanOnePage} = require ("../controllers/crawl-controllers")
-const {saveOnePageToCache,checkCachePage } = require ("../helpers/cache")
+const app = require ("../src/server");
+const { crawlerOnePage,crawlerMoreThanOnePage} = require ("../src/controllers/crawl-controllers")
+const {saveOnePageToCache,checkCachePage } = require ("../src/helpers/cache")
 
 // afterEach(() => app.close());
 

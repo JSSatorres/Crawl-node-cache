@@ -10,8 +10,8 @@ const myCache = new NodeCache({ stdTTL: 30 });
  * @returns {void}
  */
 
-const saveOnePageToCache = (key, value) => {
-  myCache.set(key, value, 60);
+const saveOnePageToCache = async (key, value) => {
+  await myCache.set(key, value, 60);
 };
 
 /**
@@ -20,9 +20,11 @@ const saveOnePageToCache = (key, value) => {
  * @returns {Boolean} true: key is stored in cache, false: key is not stored in cache
  */
 
-const checkCachePage = (key) => {
+const checkCachePage = async(key) => {
   console.log("esta es la key", key);
-  return myCache.has(key);
+  const keyCache = await myCache.has(key)
+  console.log("estee",keyCache);
+  return keyCache;
 };
 
 /**
@@ -91,4 +93,5 @@ module.exports = {
   getOnePageToCache,
   checkKeysCacheExist,
   getPagesInCached,
+  myCache
 };

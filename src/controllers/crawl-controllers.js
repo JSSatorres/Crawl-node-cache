@@ -41,7 +41,7 @@ async function crawlerMoreThanOnePage(req, res) {
   const { numberOfPagesWanted } = req.params;
   console.log(numberOfPagesWanted);
 
-  if ((await isNumber(numberOfPagesWanted)) === false)
+  if ((isNumber(numberOfPagesWanted)) === false)
     return res.json("Not a Number");
 
   let dataAllPages = [];

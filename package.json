@@ -4,8 +4,8 @@
   "description": "crawl and node-cache",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha src/test/api.test.js --timeout 10000 --exit ",
-    "play": "cross-env NODE_ENV=development nodemon src/utils/utils.js",
+    "test": "mocha test/api.test.js --timeout 10000 --exit ",
+    "play": "cross-env NODE_ENV=development nodemon src/helpers/crawlers.js",
     "start": "cross-env NODE_ENV=production node src/index.js",
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
     "test:watch": "npm run test -- --watch"
@@ -29,6 +29,7 @@
     "node-fetch": "^3.2.0"
   },
   "devDependencies": {
+    "chai": "^4.3.6",
     "mocha": "^10.0.0",
     "nodemon": "^2.0.15",
     "supertest": "^6.2.3"
