@@ -28,12 +28,12 @@ const crawlTableRow = async (url, selectorTableRow, selectorTag) => {
 };
 
 /**
- *
- * @param {*} titles
- * @param {*} links
- * @param {*} authors
- * @param {*} comments
- * @returns
+ * recive the data of crawlDataPage with the result crawlTableRow abd retun and array with all the object
+ * @param {String} titles titles of the pge crawled
+ * @param {String} links links of the pge crawled
+ * @param {String} authors authors of the pge crawled
+ * @param {String} comments comments of the pge crawled
+ * @returns {Array<Object>} [{titles,links,authors,comments}]
  */
 const objectCrawl = (titles, links, authors, comments) => {
   const data = titles.map((title, index) => {

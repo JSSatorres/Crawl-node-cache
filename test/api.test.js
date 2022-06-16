@@ -2,13 +2,6 @@ const app = require("../src/server");
 const request = require("supertest");
 const assert = require("assert");
 const expect = require("chai").expect;
-const {
-  saveOnePageToCache,
-  checkCachePage,
-  getOnePageToCache,
-  checkKeysCacheExist,
-  getPagesInCached,
-} = require("../src/helpers/cache");
 
 const {
   crawlTableRow,
@@ -16,30 +9,6 @@ const {
   isNumber,
 } = require("../src/helpers/crawlers");
 
-const titleSelectorCSS = async () => {
-  await crawlTableRow(
-    `https://news.ycombinator.com/news?p=2`,
-    ".athing",
-    ".titlelink"
-  );
-};
-const NodeCache = require("node-cache");
-// beforeEach(async function () {
-//   await db.clear();
-//   await db.save([tobi, loki, jane]);
-// });
-
-// describe("when is imboced checkCachePage ", () => {
-//   const myCache = new NodeCache({ stdTTL: 30 });
-//   const data = saveOnePageToCache("page2", "bar");
-//   console.log("este es el undefined", data);
-//   const cachePage = checkCachePage(1);
-
-//   it("should respond true when the key is into cache", (done) => {
-//     expect(cachePage).to.be.true;
-//     done();
-//   });
-// });
 
 describe("Unit testfunction in: '../src/helpers/crawlers' ", () => {
   describe("-when is imboced function objectCrawl ", () => {
@@ -98,12 +67,16 @@ describe("Unit testfunction in: '../src/helpers/crawlers' ", () => {
   describe("-when is imboced function isNumber ", () => {
     const number = isNumber(2);
     const shouldChangeToANumber = isNumber("22");
+    const ChangeToANumberBeginNumberString = isNumber("2foo");
     const notChangeToANumber = isNumber("foo");
     it("should respond true when parametre is a number", () => {
       expect(number).to.be.true;
     });
     it("should respond true when parametre can parseInt a number", () => {
       expect(shouldChangeToANumber).to.be.true;
+    });
+    it("should respond true when parametre is a string which begin with a number", () => {
+      expect(ChangeToANumberBeginNumberString).to.be.true;
     });
     it("should respond false when parametre can not parseInt a number", () => {
       expect(notChangeToANumber).to.be.false;
@@ -118,7 +91,6 @@ describe("given test service ", () => {
         .get("/1")
         .set("Accept", "application/json")
         .expect("Content-Type", /json/)
-        // .expect(app).to.have.lengthOf(30)
         .expect(200, done)
     });
   });

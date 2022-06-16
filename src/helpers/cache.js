@@ -1,7 +1,6 @@
 const NodeCache = require("node-cache");
-
-//TODO change 100seconds to 300
-const myCache = new NodeCache({ stdTTL: 30 });
+//TODO CHANGE TO 5000
+const myCache = new NodeCache({ stdTTL: 20 });
 
 /**
  * stores a page that has been crawled
@@ -21,9 +20,7 @@ const saveOnePageToCache = async (key, value) => {
  */
 
 const checkCachePage = async(key) => {
-  console.log("esta es la key", key);
   const keyCache = await myCache.has(key)
-  console.log("estee",keyCache);
   return keyCache;
 };
 
@@ -50,14 +47,9 @@ const checkKeysCacheExist = async (numberToCheck) => {
   for (let i = numberToCheck; 1 <= i; i--) {
     if (keysToCheck.includes(`page${i}`) === true) {
       let highestNumberPageCached = i;
-      console.log(
-        " si entraaaaa highestNumberPageCached",
-        highestNumberPageCached
-      );
       return highestNumberPageCached;
     }
   }
-  console.log("no entraaaa highestNumberPageCached", highestNumberPageCached);
   return highestNumberPageCached;
 };
 /**
@@ -68,22 +60,14 @@ const checkKeysCacheExist = async (numberToCheck) => {
 
 const getPagesInCached = async (numberToCheck) => {
   const keysToCheck = await myCache.keys();
-  // let keyPagesInCached =[]
-  // console.log("keys ",keysToCheck);
-  // console.log(numberToCheck);
   let pagesGetitFromCached = [];
 
   for (let i = numberToCheck; 0 < i; i--) {
-    console.log(keysToCheck.includes(`page${i}`));
     if (keysToCheck.includes(`page${i}`) === true) {
       const onePageGetitFromCached = await getOnePageToCache(`page${i}`);
-      console.log(`page${i}`);
-      pagesGetitFromCached = [
-        ...pagesGetitFromCached.concat(onePageGetitFromCached),
-      ];
+      pagesGetitFromCached = [...pagesGetitFromCached.concat(onePageGetitFromCached)];
     }
   }
-
   return pagesGetitFromCached;
 };
 
